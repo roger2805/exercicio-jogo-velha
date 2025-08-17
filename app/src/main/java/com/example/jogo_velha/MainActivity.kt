@@ -19,7 +19,7 @@ import com.google.android.material.button.MaterialButton
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var animacao_fundo: LinearLayout
+    private lateinit var animacaoFundo: LinearLayout
     private lateinit var tabela: GridLayout
     private lateinit var tvTurno: TextView
     private lateinit var tvPontosX: TextView
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        animacao_fundo = findViewById(R.id.main)
+        animacaoFundo = findViewById(R.id.main)
         tabela = findViewById(R.id.TabelaJogo)
         tvTurno = findViewById(R.id.JogadorAtual)
         tvPontosX = findViewById(R.id.PontosX)
@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         colorAnimation.repeatMode = ValueAnimator.REVERSE
         colorAnimation.repeatCount = ValueAnimator.INFINITE
         colorAnimation.addUpdateListener { animator ->
-            animacao_fundo.setBackgroundColor(animator.animatedValue as Int)
+            animacaoFundo.setBackgroundColor(animator.animatedValue as Int)
         }
         colorAnimation.start()
     }
