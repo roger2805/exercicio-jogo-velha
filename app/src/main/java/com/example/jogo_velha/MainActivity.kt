@@ -19,11 +19,11 @@ import com.google.android.material.button.MaterialButton
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var rootLayout: LinearLayout
+    private lateinit var animacao_fundo: LinearLayout
     private lateinit var tabela: GridLayout
-    private lateinit var turnoTextView: TextView
-    private lateinit var pontosXText: TextView
-    private lateinit var pontosOText: TextView
+    private lateinit var tvTurno: TextView
+    private lateinit var tvPontosX: TextView
+    private lateinit var tvPontosO: TextView
     private lateinit var btnReiniciar: MaterialButton
 
     private var turno = "X"
@@ -40,11 +40,11 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        rootLayout = findViewById(R.id.main)
+        animacao_fundo = findViewById(R.id.main)
         tabela = findViewById(R.id.TabelaJogo)
-        turnoTextView = findViewById(R.id.JogadorAtual)
-        pontosXText = findViewById(R.id.PontosX)
-        pontosOText = findViewById(R.id.PontosO)
+        tvTurno = findViewById(R.id.JogadorAtual)
+        tvPontosX = findViewById(R.id.PontosX)
+        tvPontosO = findViewById(R.id.PontosO)
         btnReiniciar = findViewById(R.id.btnReiniciarJogo)
 
         atualizarTurno()
@@ -63,9 +63,9 @@ class MainActivity : AppCompatActivity() {
                         if (vencedor == "X") pontosX++ else pontosO++
                         atualizarPlacar()
                         atualizarPlacar()
-                        mostrarVencedorDialogPersonalizado(vencedor)
+                        mostrarAvisoVitoria(vencedor)
                     } else if (checarEmpate()) {
-                        mostrarEmpateDialog()
+                        mostrarAvisoEmpate()
                     } else {
                         trocarTurno()
                     }
@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         colorAnimation.repeatMode = ValueAnimator.REVERSE
         colorAnimation.repeatCount = ValueAnimator.INFINITE
         colorAnimation.addUpdateListener { animator ->
-            rootLayout.setBackgroundColor(animator.animatedValue as Int)
+            animacao_fundo.setBackgroundColor(animator.animatedValue as Int)
         }
         colorAnimation.start()
     }
@@ -107,16 +107,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun atualizarTurno() {
-        turnoTextView.text = "Jogador atual: $turno"
+        tvTurno.text = "Jogador atual: $turno"
     }
 
     private fun atualizarPlacar() {
-        pontosXText.text = pontosX.toString()
-        pontosOText.text = pontosO.toString()
+        tvPontosX.text = pontosX.toString()
+        tvPontosO.text = pontosO.toString()
     }
 
-    private fun mostrarVencedorDialogPersonalizado(vencedor: String) {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_vencedor, null)
+    private fun mostrarAvisoVitoria(vencedor: String) {
+        val dialogView = layoutInflater.inflate(R.layout.aviso_tela, null)
         val tvMensagem = dialogView.findViewById<TextView>(R.id.tvMensagem)
         val btnOk = dialogView.findViewById<Button>(R.id.btnOk)
 
@@ -135,17 +135,17 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun mostrarEmpateDialog() {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_vencedor, null)
-        val tvTitulo = dialogView.findViewById<TextView>(R.id.tvTitulo)
-        val tvMensagem = dialogView.findViewById<TextView>(R.id.tvMensagem)
-        val btnOk = dialogView.findViewById<Button>(R.id.btnOk)
+    private fun mostrarAvisoEmpate() {
+        val avisoTela = layoutInflater.inflate(R.layout.aviso_tela, null)
+        val tvTitulo = avisoTela.findViewById<TextView>(R.id.tvTitulo)
+        val tvMensagem = avisoTela.findViewById<TextView>(R.id.tvMensagem)
+        val btnOk = avisoTela.findViewById<Button>(R.id.btnOk)
 
         tvTitulo.text = "Fim de Jogo"
         tvMensagem.text = "Empate!"
 
         val dialog = AlertDialog.Builder(this)
-            .setView(dialogView)
+            .setView(avisoTela)
             .setCancelable(false)
             .create()
 
@@ -153,7 +153,6 @@ class MainActivity : AppCompatActivity() {
             dialog.dismiss()
             reiniciarTabuleiro()
         }
-
         dialog.show()
     }
 
